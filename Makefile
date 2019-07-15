@@ -20,16 +20,21 @@ TARGET = bluepill_stm32cube_template
 # building variables
 ######################################
 # debug build?
-DEBUG = 1
-# optimization
+ifeq ($(DEBUG), 1)
 OPT = -O0 -g
+BUILD_DIR = build/Debug
+else
+OPT = -Os -g 
+BUILD_DIR = build/Release
+endif
+
 
 
 #######################################
 # paths
 #######################################
 # Build path
-BUILD_DIR = build
+
 
 ######################################
 # source
@@ -153,6 +158,9 @@ vpath %.c $(sort $(dir $(C_SOURCES)))
 # list of ASM program objects
 OBJECTS += $(addprefix $(BUILD_DIR)/,$(notdir $(ASM_SOURCES:.s=.o)))
 vpath %.s $(sort $(dir $(ASM_SOURCES)))
+	
+$(warning BUILD_DIR =  $(BUILD_DIR))
+$(warning OBJECTS =  $(OBJECTS))
 
 $(BUILD_DIR)/%.o: %.c Makefile | $(BUILD_DIR) 
 	$(CC) -c $(CFLAGS) -Wa,-a,-ad,-alms=$(BUILD_DIR)/$(notdir $(<:.c=.lst)) $< -o $@
@@ -177,7 +185,7 @@ $(BUILD_DIR):
 # clean up
 #######################################
 clean:
-	-rm -fR $(BUILD_DIR)
+	-rm $(BUILD_DIR)/*.bin $(BUILD_DIR)/*.elf $(BUILD_DIR)/*.hex $(BUILD_DIR)/*.map $(BUILD_DIR)/*.d $(BUILD_DIR)/*.lst $(BUILD_DIR)/*.o
   
 #######################################
 # dependencies

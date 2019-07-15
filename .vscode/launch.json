@@ -10,7 +10,7 @@
             "request": "attach",
             "remote": true,
             "target": ":3333",
-            "executable": "build/bluepill_stm32cube_template.elf",
+            "executable": "build/Debug/bluepill_stm32cube_template.elf",
             "cwd": "${workspaceFolder}",
             "autorun": [
                 "monitor init",
